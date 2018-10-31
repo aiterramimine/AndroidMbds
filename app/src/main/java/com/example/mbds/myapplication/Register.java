@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.mbds.myapplication.services.DBHelper;
+import com.example.mbds.myapplication.services.UserOperations;
 
 public class Register extends AppCompatActivity {
-    private DBHelper dbHelper;
+    private UserOperations userOperations;
 
-    private EditText loginText;
-    private EditText passwordText;
+    private EditText login;
+    private EditText password;
     private EditText firstName;
     private EditText lastName;
 
@@ -21,15 +22,21 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        loginText = findViewById(R.id.login_box);
-        passwordText = findViewById(R.id.pass_box);
+        login = findViewById(R.id.login_box);
+        password = findViewById(R.id.pass_box);
+        firstName = findViewById(R.id.first_name_box);
+        lastName = findViewById(R.id.last_name_box);
 
-        dbHelper = new DBHelper(getApplicationContext());
+        userOperations = new UserOperations(this);
     }
 
     public void register(View v) {
-        //ToDo : insert new user here
-        System.out.println("New user : " + loginText.getText() + " || " + passwordText.getText());
+
+        userOperations.addUser(
+                login.getText().toString(),
+                password.getText().toString(),
+                firstName.getText().toString(),
+                lastName.getText().toString());
     }
 
     public void toLogin(View v) {
