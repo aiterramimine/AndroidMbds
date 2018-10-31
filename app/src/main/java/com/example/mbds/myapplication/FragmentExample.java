@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 
-public class FragmentExample extends AppCompatActivity implements MasterFragment.OnArticleSelectedListener {
+public class FragmentExample extends AppCompatActivity implements MasterFragment.OnMessageSelectedListener {
 
     FragmentManager fm;
 
@@ -25,7 +25,7 @@ public class FragmentExample extends AppCompatActivity implements MasterFragment
     }
 
     @Override
-    public void onItemSelected(String itemName) {
+    public void onMessageSelected(String itemName) {
         //Log.d(getLocalClassName(), "The id is : " + id);
         DetailsFragment detailsFragment = DetailsFragment.newInstance(itemName);
         fm.beginTransaction().replace(R.id.fragment_container, detailsFragment).commit();

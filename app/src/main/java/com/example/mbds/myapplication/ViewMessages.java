@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.example.mbds.myapplication.adapters.MessageAdapter;
 import com.example.mbds.myapplication.entities.Message;
 import com.example.mbds.myapplication.services.MessageEntry;
-import com.example.mbds.myapplication.services.MessageReaderDBHelper;
+import com.example.mbds.myapplication.services.EntityReaderDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ViewMessages extends AppCompatActivity {
 
         messagesLv.setAdapter(adapter);
 
-        db = new MessageReaderDBHelper(this).getReadableDatabase();
+        db = new EntityReaderDBHelper(this).getReadableDatabase();
 
         csr = db.query(
                 MessageEntry.TABLE_NAME,

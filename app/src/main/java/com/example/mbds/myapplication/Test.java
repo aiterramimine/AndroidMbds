@@ -1,16 +1,14 @@
 package com.example.mbds.myapplication;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.mbds.myapplication.services.MessageReaderDBHelper;
+import com.example.mbds.myapplication.services.EntityReaderDBHelper;
 
 public class Test extends AppCompatActivity {
 
@@ -21,7 +19,7 @@ public class Test extends AppCompatActivity {
     private Button submitBtn;
 
 
-    private MessageReaderDBHelper dbHelper;
+    private EntityReaderDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +30,8 @@ public class Test extends AppCompatActivity {
         passBox = findViewById(R.id.pass_box);
         submitBtn = findViewById(R.id.login_submit);
 
-        //db = new MessageReaderDBHelper(this).getWritableDatabase();
-        dbHelper = new MessageReaderDBHelper(this);
+        //db = new EntityReaderDBHelper(this).getWritableDatabase();
+        dbHelper = new EntityReaderDBHelper(this);
     }
 
     public void login(View v) {

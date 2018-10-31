@@ -4,22 +4,25 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class MessageReaderDBHelper extends SQLiteOpenHelper {
+public class EntityReaderDBHelper extends SQLiteOpenHelper {
 
     private final static String SQL_CREATE_ENTRIES =
         "CREATE TABLE " + MessageEntry.TABLE_NAME + " (" +
         MessageEntry._ID + " INTEGER PRIMARY KEY," +
         MessageEntry.COLUMN_NAME_SENDER + " TEXT, " +
         MessageEntry.COLUMN_NAME_RECEIVER + " TEXT, " +
-        MessageEntry.COLUMN_NAME_CONTENT + " TEXT)";
+        MessageEntry.COLUMN_NAME_CONTENT + " TEXT," +
+        MessageEntry.COLUMN_NAME_DATE+ " TEXT," +
+        MessageEntry.COLUMN_NAME_READ + " INTEGER" +
+        ")";
 
     private final static String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + MessageEntry.TABLE_NAME;
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "MessageReader.db";
+    public static final String DATABASE_NAME = "EntityReader.db";
 
-    public MessageReaderDBHelper(Context ctx) {
+    public EntityReaderDBHelper(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
