@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + MessageEntry.TABLE_NAME;
 
     private static final String CREATE_USER =
-            "CREATE TABLE " + UserEntry.TABLE_USER + "(" +
+            "CREATE TABLE " + UserEntry.TABLE_NAME + "(" +
             UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             UserEntry.USER_LOGIN + " VARCHAR(20) NOT NULL, " +
             UserEntry.USER_PASSWORD + " VARCHAR(20) NOT NULL, " +
@@ -35,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
             UserEntry.USER_LASTNAME + " TEXT);";
 
     private static final String DROP_USER =
-            "DROP TABLE IF EXISTS " + UserEntry.TABLE_USER;
+            "DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME;
 
 
     public DBHelper(Context ctx) {

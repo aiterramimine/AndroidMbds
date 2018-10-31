@@ -9,7 +9,6 @@ import android.provider.BaseColumns;
 import com.example.mbds.myapplication.services.entries.UserEntry;
 
 public class UserOperations {
-    private Context context;
     private SQLiteDatabase db;
 
     public UserOperations(Context context) {
@@ -25,7 +24,7 @@ public class UserOperations {
         values.put(UserEntry.USER_FIRSTNAME, firstName);
         values.put(UserEntry.USER_LASTNAME, lastName);
 
-        long newRowId = db.insert(UserEntry.TABLE_USER, null, values);
+        long newRowId = db.insert(UserEntry.TABLE_NAME, null, values);
         System.out.println("New contact added : \n - First name : " + firstName + "\n - Last name : " + lastName + "\n - Login : " + login);
     }
 
@@ -43,7 +42,7 @@ public class UserOperations {
         };
 
         Cursor c = db.query(
-                UserEntry.TABLE_USER,
+                UserEntry.TABLE_NAME,
                 projection,
                 whereClause,
                 whereArgs,
