@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.mbds.myapplication.services.DBHelper;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
@@ -48,7 +49,11 @@ public class CreateMessage extends AppCompatActivity {
 
         long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);
 
-        Log.d("tagg", "INSERTING MESSAGE | rowId: " + rowId);
+        super.onBackPressed();
+
+        Toast.makeText(this, "Message sent successfully", Toast.LENGTH_LONG).show();
+        
+        //Log.d("tagg", "INSERTING MESSAGE | rowId: " + rowId);
     }
 
 
