@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + UserEntry.TABLE_USER + "(" +
             UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             UserEntry.USER_LOGIN + " VARCHAR(20) NOT NULL, " +
-            UserEntry.USER_PASSWORD + "  NOT NULL, " +
+            UserEntry.USER_PASSWORD + " VARCHAR(20) NOT NULL, " +
             UserEntry.USER_FIRSTNAME + " TEXT, " +
             UserEntry.USER_LASTNAME + " TEXT);";
 

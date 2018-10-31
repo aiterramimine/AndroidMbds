@@ -7,17 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.mbds.myapplication.services.DBHelper;
 
 public class Test extends AppCompatActivity {
 
     private EditText loginBox;
-
     private EditText passBox;
-
     private Button submitBtn;
-
 
     private DBHelper dbHelper;
 
@@ -72,6 +70,11 @@ public class Test extends AppCompatActivity {
 
     public void toMessages(View v) {
         Intent intent = new Intent(this, ViewMessages.class);
+        startActivity(intent);
+    }
+
+    public void toRegister(View v) {
+        Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
 
