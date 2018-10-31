@@ -11,7 +11,9 @@ import android.widget.EditText;
 import com.example.mbds.myapplication.services.DBHelper;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CreateMessage extends AppCompatActivity {
 
@@ -36,7 +38,12 @@ public class CreateMessage extends AppCompatActivity {
         vals.put(MessageEntry.MESSAGE_SENDER, sender);
         vals.put(MessageEntry.MESSAGE_RECEIVER, receiver);
         vals.put(MessageEntry.MESSAGE_CONTENT, content);
-        vals.put(MessageEntry.MESSAGE_RECEIVED_AT, Calendar.getInstance().getTime().toString());
+
+        Date receivedAt = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+        String receivedAtStr = formatter.format(receivedAt);
+
+        vals.put(MessageEntry.MESSAGE_RECEIVED_AT, receivedAtStr);
         vals.put(MessageEntry.MESSAGE_READ, false);
 
         long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);

@@ -40,6 +40,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         TextView contentTv = listItem.findViewById(R.id.content_tv);
         contentTv.setText(curMes.getContent());
 
+        TextView receivedAt = listItem.findViewById(R.id.date_tv);
+        receivedAt.setText(curMes.getFormattedReceivedAt());
+
         return listItem;
     }
 

@@ -27,7 +27,9 @@ public class ViewMessages extends AppCompatActivity {
             BaseColumns._ID,
             MessageEntry.MESSAGE_SENDER,
             MessageEntry.MESSAGE_RECEIVER,
-            MessageEntry.MESSAGE_CONTENT
+            MessageEntry.MESSAGE_CONTENT,
+            MessageEntry.MESSAGE_RECEIVED_AT,
+            MessageEntry.MESSAGE_READ
     };
 
     //public static final String SELECTION = MessageEntry.MESSAGE_SENDER + " = ?";
@@ -103,7 +105,7 @@ public class ViewMessages extends AppCompatActivity {
 
 
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
                 Date receivedAtDate = sdf.parse(receivedAt);
                 Message m = new Message(id, sender, receiver, content, receivedAtDate, read);
 
@@ -111,7 +113,7 @@ public class ViewMessages extends AppCompatActivity {
 
                 Log.d("tagg", "GETTING MESSAGE: " + m);
 
-            } catch( ParseException pe) {
+            } catch( Exception pe) {
                 Log.e("tagg", "A date parsing exception has occured");
             }
 

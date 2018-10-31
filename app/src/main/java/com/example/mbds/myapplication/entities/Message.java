@@ -1,5 +1,6 @@
 package com.example.mbds.myapplication.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message {
@@ -80,5 +81,10 @@ public class Message {
 
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public String getFormattedReceivedAt() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+        return formatter.format(receivedAt);
     }
 }
