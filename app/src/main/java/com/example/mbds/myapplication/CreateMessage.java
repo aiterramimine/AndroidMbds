@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.mbds.myapplication.services.EntityReaderDBHelper;
-import com.example.mbds.myapplication.services.MessageEntry;
+import com.example.mbds.myapplication.services.DBHelper;
+import com.example.mbds.myapplication.services.entries.MessageEntry;
 
 public class CreateMessage extends AppCompatActivity {
 
@@ -20,7 +20,7 @@ public class CreateMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_message);
 
-        db = new EntityReaderDBHelper(this).getWritableDatabase();
+        db = new DBHelper(this).getWritableDatabase();
 
     }
 
@@ -30,9 +30,9 @@ public class CreateMessage extends AppCompatActivity {
         String content = ((EditText)findViewById(R.id.content_edt)).getText().toString();
 
         ContentValues vals = new ContentValues();
-        vals.put(MessageEntry.COLUMN_NAME_SENDER, sender);
-        vals.put(MessageEntry.COLUMN_NAME_RECEIVER, receiver);
-        vals.put(MessageEntry.COLUMN_NAME_CONTENT, content);
+        vals.put(MessageEntry.MESSAGE_SENDER, sender);
+        vals.put(MessageEntry.MESSAGE_RECEIVER, receiver);
+        vals.put(MessageEntry.MESSAGE_CONTENT, content);
 
 
         long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);

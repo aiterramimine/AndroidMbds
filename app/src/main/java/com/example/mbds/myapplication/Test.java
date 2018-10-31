@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.mbds.myapplication.services.EntityReaderDBHelper;
+import com.example.mbds.myapplication.services.DBHelper;
 
 public class Test extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class Test extends AppCompatActivity {
     private Button submitBtn;
 
 
-    private EntityReaderDBHelper dbHelper;
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,8 @@ public class Test extends AppCompatActivity {
         passBox = findViewById(R.id.pass_box);
         submitBtn = findViewById(R.id.login_submit);
 
-        //db = new EntityReaderDBHelper(this).getWritableDatabase();
-        dbHelper = new EntityReaderDBHelper(this);
+        //db = new DBHelper(this).getWritableDatabase();
+        dbHelper = new DBHelper(this);
 
         Intent intent = getIntent();
         String action = intent.getAction();

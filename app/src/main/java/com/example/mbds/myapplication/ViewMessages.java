@@ -10,8 +10,8 @@ import android.widget.ListView;
 
 import com.example.mbds.myapplication.adapters.MessageAdapter;
 import com.example.mbds.myapplication.entities.Message;
-import com.example.mbds.myapplication.services.MessageEntry;
-import com.example.mbds.myapplication.services.EntityReaderDBHelper;
+import com.example.mbds.myapplication.services.entries.MessageEntry;
+import com.example.mbds.myapplication.services.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +21,16 @@ public class ViewMessages extends AppCompatActivity {
 
     public static final String PROJECTION[] = {
             BaseColumns._ID,
-            MessageEntry.COLUMN_NAME_SENDER,
-            MessageEntry.COLUMN_NAME_RECEIVER,
-            MessageEntry.COLUMN_NAME_CONTENT
+            MessageEntry.MESSAGE_SENDER,
+            MessageEntry.MESSAGE_RECEIVER,
+            MessageEntry.MESSAGE_CONTENT
     };
 
-    //public static final String SELECTION = MessageEntry.COLUMN_NAME_SENDER + " = ?";
+    //public static final String SELECTION = MessageEntry.MESSAGE_SENDER + " = ?";
 
     //public static final String[] SELECTION_ARGS = {"Me"};
 
-    //public static final String SORT_ORDER = MessageEntry.COLUMN_NAME_SENDER + " DESC";
+    //public static final String SORT_ORDER = MessageEntry.MESSAGE_SENDER + " DESC";
 
     private SQLiteDatabase db;
 
@@ -55,7 +55,7 @@ public class ViewMessages extends AppCompatActivity {
 
         messagesLv.setAdapter(adapter);
 
-        db = new EntityReaderDBHelper(this).getReadableDatabase();
+        db = new DBHelper(this).getReadableDatabase();
 
         csr = db.query(
                 MessageEntry.TABLE_NAME,
@@ -77,15 +77,15 @@ public class ViewMessages extends AppCompatActivity {
                     csr.getColumnIndexOrThrow(MessageEntry._ID));
 
             String sender = csr.getString(
-                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_SENDER)
+                    csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_SENDER)
             );
 
             String receiver = csr.getString(
-                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_RECEIVER)
+                    csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_RECEIVER)
             );
 
             String content = csr.getString(
-                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_CONTENT)
+                    csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_CONTENT)
             );
 
             Message m = new Message(id, sender, receiver, content);

@@ -1,4 +1,4 @@
-package com.example.mbds.myapplication.services.users;
+package com.example.mbds.myapplication.services.entries;
 
 import android.provider.BaseColumns;
 
