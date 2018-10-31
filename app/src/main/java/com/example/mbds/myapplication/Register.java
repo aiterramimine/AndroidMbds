@@ -1,5 +1,6 @@
 package com.example.mbds.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,5 +30,10 @@ public class Register extends AppCompatActivity {
     public void register(View v) {
         //ToDo : insert new user here
         System.out.println("New user : " + loginText.getText() + " || " + passwordText.getText());
+    }
+
+    public void toLogin(View v) {
+        Intent intent = new Intent(this, Test.class);
+        startActivity(intent);
     }
 }
