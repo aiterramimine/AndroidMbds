@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.mbds.myapplication.services.DBHelper;
+import com.example.mbds.myapplication.services.UserOperations;
 
 public class Test extends AppCompatActivity {
 
@@ -45,12 +46,15 @@ public class Test extends AppCompatActivity {
     }
 
     public void login(View v) {
-        if(loginBox.getText().toString().equals("toto")
-                && passBox.getText().toString().equals("tata")) {
+        UserOperations userOperations = new UserOperations(this);
+        boolean correctCredentials = userOperations.login(loginBox.getText().toString(), passBox.getText().toString());
+
+        if(correctCredentials) {
             submitBtn.setBackgroundColor(Color.GREEN);
         } else {
             submitBtn.setBackgroundColor(Color.RED);
         }
+
     }
 
     /**
