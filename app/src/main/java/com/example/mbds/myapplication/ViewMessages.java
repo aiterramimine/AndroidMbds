@@ -93,11 +93,11 @@ public class ViewMessages extends AppCompatActivity {
             );
 
             String receivedAt = csr.getString(
-                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_RECEIVED_AT)
+                    csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_RECEIVED_AT)
             );
 
             boolean read = csr.getInt(
-                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_READ)
+                    csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_READ)
             ) != 0;
 
 

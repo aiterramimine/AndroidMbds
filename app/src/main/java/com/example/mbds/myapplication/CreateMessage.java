@@ -32,11 +32,12 @@ public class CreateMessage extends AppCompatActivity {
         String content = ((EditText)findViewById(R.id.content_edt)).getText().toString();
 
         ContentValues vals = new ContentValues();
-        vals.put(MessageEntry.COLUMN_NAME_RECEIVED_AT, Calendar.getInstance().getTime().toString());
-        vals.put(MessageEntry.COLUMN_NAME_READ, false);
+
         vals.put(MessageEntry.MESSAGE_SENDER, sender);
         vals.put(MessageEntry.MESSAGE_RECEIVER, receiver);
         vals.put(MessageEntry.MESSAGE_CONTENT, content);
+        vals.put(MessageEntry.MESSAGE_RECEIVED_AT, Calendar.getInstance().getTime().toString());
+        vals.put(MessageEntry.MESSAGE_READ, false);
 
         long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);
 
