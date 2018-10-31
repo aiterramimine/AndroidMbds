@@ -8,7 +8,7 @@ public class Message {
     private String sender;
     private String receiver;
     private String content;
-    private Date date;
+    private Date receivedAt;
     private boolean read;
 
     public Message() {
@@ -23,9 +23,9 @@ public class Message {
         this.content = content;
     }
 
-    public Message(long id, String sender, String receiver, String content, Date date, boolean read) {
+    public Message(long id, String sender, String receiver, String content, Date receivedAt, boolean read) {
         this(id, sender, receiver, content);
-        this.date = date;
+        this.receivedAt = receivedAt;
         this.read = read;
     }
 
@@ -66,12 +66,12 @@ public class Message {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getReceivedAt() {
+        return receivedAt;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setReceivedAt(Date receivedAt) {
+        this.receivedAt = receivedAt;
     }
 
     public boolean isRead() {

@@ -12,7 +12,7 @@ public class EntityReaderDBHelper extends SQLiteOpenHelper {
         MessageEntry.COLUMN_NAME_SENDER + " TEXT, " +
         MessageEntry.COLUMN_NAME_RECEIVER + " TEXT, " +
         MessageEntry.COLUMN_NAME_CONTENT + " TEXT," +
-        MessageEntry.COLUMN_NAME_DATE+ " TEXT," +
+        MessageEntry.COLUMN_NAME_RECEIVED_AT + " TEXT," +
         MessageEntry.COLUMN_NAME_READ + " INTEGER" +
         ")";
 
