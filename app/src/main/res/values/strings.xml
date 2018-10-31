@@ -24,4 +24,8 @@
     <string name="title_activity_view_messages">ViewMessages</string>
     <string name="delete_db_btn">Delete Database</string>
 
+    <string name="add_contact">Add contact</string>
+    <string name="go_back">Go back</string>
+    <string name="nickname">Nickname</string>
+    <string name="optional">Optional</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.example.mbds.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MasterFragment extends ListFragment {
+public class MasterFragment extends ListFragment implements View.OnClickListener {
+
+    private FloatingActionButton fabContact;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -52,6 +57,7 @@ public class MasterFragment extends ListFragment {
         ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, items);
 
         setListAdapter(aa);
+
     }
 
     @Override
@@ -66,8 +72,13 @@ public class MasterFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_master, container, false);
+        fabContact = view.findViewById(R.id.fab_contact);
+
+        fabContact.setOnClickListener(this);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_master, container, false);
+        return view;
 }
 
 
@@ -93,7 +104,14 @@ public class MasterFragment extends ListFragment {
         mListener.onMessageSelected(items.get(position));
     }
 
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), Contact.class);
+        startActivity(intent);
+    }
+
     public interface OnMessageSelectedListener {
         void onMessageSelected(String itemName);
     }
+
 }
