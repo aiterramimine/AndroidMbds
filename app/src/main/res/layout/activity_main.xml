@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/login_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40dp"
+        android:text="@string/login_txt" />
+
+    <EditText
+        android:id="@+id/login_box"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/pass_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40dp"
+        android:text="@string/pass_txt" />
+
+    <EditText
+        android:id="@+id/pass_box"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/login_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_submit"
+        android:onClick="login"/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="toFragmentExample"
+        android:text="@string/frag_example_btn" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="toCreateMessage"
+        android:text="@string/create_message_btn" />
+
+    <Button
+        android:id="@+id/view_messages_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="toMessages"
+        android:text="@string/view_messages_btn_txt" />
+
+    <Button
+        android:id="@+id/delete_db_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="deleteDb"
+        android:text="@string/delete_db_btn" />
+
+</LinearLayout>

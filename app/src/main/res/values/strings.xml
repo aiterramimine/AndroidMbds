@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="login_txt">Login</string>
+    <string name="pass_txt">Password</string>
+    <string name="login_submit">Submit</string>
+    <string name="frag_example_btn">Fragment example</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_fragment_exaple">FragmentExaple</string>
+    <string name="create_message_btn">New Message</string>
+    <string name="title_activity_create_message">CreateMessage</string>
+    <string name="receiver_hint">Receiver</string>
+    <string name="content_hint">Content</string>
+    <string name="create_message_title">New Message</string>
+    <string name="send_message_btn">Send</string>
+    <string name="view_messages_btn_txt">My Messages</string>
+    <string name="title_activity_view_messages">ViewMessages</string>
+    <string name="delete_db_btn">Delete Database</string>
+
+</resources>
