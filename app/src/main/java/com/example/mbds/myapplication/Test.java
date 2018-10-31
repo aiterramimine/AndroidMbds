@@ -32,6 +32,18 @@ public class Test extends AppCompatActivity {
 
         //db = new EntityReaderDBHelper(this).getWritableDatabase();
         dbHelper = new EntityReaderDBHelper(this);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null){
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // Handle text being sent
+            }
+        }
+
+
     }
 
     public void login(View v) {
@@ -65,6 +77,13 @@ public class Test extends AppCompatActivity {
 
     public void deleteDb(View v) {
         dbHelper.deleteDatabase(this);
+    }
+
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            //System.out.println("Shared text : " + sharedText);
+        }
     }
 
 
