@@ -13,7 +13,11 @@ import com.example.mbds.myapplication.entities.Message;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
 import com.example.mbds.myapplication.services.DBHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -88,11 +92,28 @@ public class ViewMessages extends AppCompatActivity {
                     csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_CONTENT)
             );
 
-            Message m = new Message(id, sender, receiver, content);
+            String receivedAt = csr.getString(
+                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_RECEIVED_AT)
+            );
 
-            messages.add(m);
+            boolean read = csr.getInt(
+                    csr.getColumnIndexOrThrow(MessageEntry.COLUMN_NAME_READ)
+            ) != 0;
 
-            Log.d("tagg", "GETTING MESSAGE: " + m);
+
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date receivedAtDate = sdf.parse(receivedAt);
+                Message m = new Message(id, sender, receiver, content, receivedAtDate, read);
+
+                messages.add(m);
+
+                Log.d("tagg", "GETTING MESSAGE: " + m);
+
+            } catch( ParseException pe) {
+                Log.e("tagg", "A date parsing exception has occured");
+            }
 
         }
 
