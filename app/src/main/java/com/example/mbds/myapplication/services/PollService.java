@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mbds.myapplication.entities.Message;
+import com.example.mbds.myapplication.entities.MessageUtils;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
 
 import org.json.JSONArray;
@@ -111,8 +112,8 @@ public class PollService extends Service {
                             continue;
 
                         ContentValues vals = new ContentValues();
-                        vals.put(MessageEntry.MESSAGE_SENDER, o.getString("author"));
-                        vals.put(MessageEntry.MESSAGE_CONTENT, o.getString("msg"));
+                        vals.put(MessageEntry.MESSAGE_SENDER, MessageUtils.getAuthor(o.getString("msg")));
+                        vals.put(MessageEntry.MESSAGE_CONTENT, MessageUtils.getContent(o.getString("msg")));
                         vals.put(MessageEntry.MESSAGE_RECEIVED_AT, o.getString("dateCreated"));
 
                         long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);

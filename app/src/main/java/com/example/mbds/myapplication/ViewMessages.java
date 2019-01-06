@@ -26,7 +26,6 @@ public class ViewMessages extends AppCompatActivity {
     public static final String PROJECTION[] = {
             BaseColumns._ID,
             MessageEntry.MESSAGE_SENDER,
-          //  MessageEntry.MESSAGE_RECEIVER,
             MessageEntry.MESSAGE_CONTENT,
             MessageEntry.MESSAGE_RECEIVED_AT,
             MessageEntry.MESSAGE_READ

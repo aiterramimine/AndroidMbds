@@ -34,8 +34,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         Message curMes = messages.get(position);
 
-        //TextView receiverTv = listItem.findViewById(R.id.receiver_tv);
-        //receiverTv.setText(curMes.getReceiver());
+        TextView senderTv = listItem.findViewById(R.id.sender_tv);
+        senderTv.setText(curMes.getSender());
 
         TextView contentTv = listItem.findViewById(R.id.content_tv);
         contentTv.setText(curMes.getContent());
