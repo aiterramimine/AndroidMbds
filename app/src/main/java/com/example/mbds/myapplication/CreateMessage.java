@@ -128,7 +128,7 @@ public class CreateMessage extends AppCompatActivity {
         ContentValues vals = new ContentValues();
 
         vals.put(MessageEntry.MESSAGE_SENDER, sender);
-        vals.put(MessageEntry.MESSAGE_RECEIVER, receiver);
+        //vals.put(MessageEntry.MESSAGE_RECEIVER, receiver);
         vals.put(MessageEntry.MESSAGE_CONTENT, content);
 
         Date receivedAt = new Date();

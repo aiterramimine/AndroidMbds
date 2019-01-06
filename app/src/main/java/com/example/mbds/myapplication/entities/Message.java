@@ -7,7 +7,6 @@ public class Message {
 
     private long id;
     private String sender;
-    private String receiver;
     private String content;
     private Date receivedAt;
     private boolean read;
@@ -17,15 +16,14 @@ public class Message {
     }
 
     // Old constructor to be deleted when not used anymore.
-    public Message(long id, String sender, String receiver, String content) {
+    public Message(long id, String sender, String content) {
         this.id = id;
         this.sender = sender;
-        this.receiver = receiver;
         this.content = content;
     }
 
-    public Message(long id, String sender, String receiver, String content, Date receivedAt, boolean read) {
-        this(id, sender, receiver, content);
+    public Message(long id, String sender, String content, Date receivedAt, boolean read) {
+        this(id, sender, content);
         this.receivedAt = receivedAt;
         this.read = read;
     }
@@ -38,13 +36,6 @@ public class Message {
         this.sender = sender;
     }
 
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
 
     public String getContent() {
         return content;
@@ -56,7 +47,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "id:" + id + "|sender:" + sender + "|receiver:" + receiver + "|content:" + content;
+        return "id:" + id + "|sender:" + sender + "|content:" + content;
     }
 
     public long getId() {

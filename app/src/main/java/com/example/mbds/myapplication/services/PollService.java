@@ -1,9 +1,11 @@
 package com.example.mbds.myapplication.services;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,6 +20,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mbds.myapplication.entities.Message;
+import com.example.mbds.myapplication.services.entries.MessageEntry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +34,7 @@ public class PollService extends Service {
 
     private Handler mHandler;
     private Context context = this;
+    private SQLiteDatabase db;
 
     // default interval for syncing data
     public static final long DEFAULT_SYNC_INTERVAL = 30 * 1000;
@@ -49,6 +54,8 @@ public class PollService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
+
+        db = new DBHelper(this).getWritableDatabase();
 
         // Create the Handler object
         mHandler = new Handler();
@@ -96,7 +103,24 @@ public class PollService extends Service {
                    // return Response.success(new JSONObject(jsonString),
                      //       HttpHeaderParser.parseCacheHeaders(response));
 
-                    Log.d("polli", new JSONArray(jsonString).toString());
+                    JSONArray arr = new JSONArray(jsonString);
+
+                    for(int i = 0; i < arr.length(); i++) {
+                        JSONObject o = arr.getJSONObject(i);
+                        if(o.getBoolean("alreadyReturned"))
+                            continue;
+
+                        ContentValues vals = new ContentValues();
+                        vals.put(MessageEntry.MESSAGE_SENDER, o.getString("author"));
+                        vals.put(MessageEntry.MESSAGE_CONTENT, o.getString("msg"));
+                        vals.put(MessageEntry.MESSAGE_RECEIVED_AT, o.getString("dateCreated"));
+
+                        long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);
+
+                        Log.d("polli", rowId + "");
+                    }
+
+                    Log.d("polli", arr.toString());
                     return Response.error(new VolleyError());
 
                 } catch (Exception e) {

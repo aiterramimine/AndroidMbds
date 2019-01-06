@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
         "CREATE TABLE " + MessageEntry.TABLE_NAME + "(" +
         MessageEntry._ID + " INTEGER PRIMARY KEY," +
         MessageEntry.MESSAGE_SENDER + " TEXT, " +
-        MessageEntry.MESSAGE_RECEIVER + " TEXT, " +
+       // MessageEntry.MESSAGE_RECEIVER + " TEXT, " +
         MessageEntry.MESSAGE_CONTENT + " TEXT," +
         MessageEntry.MESSAGE_RECEIVED_AT + " TEXT," +
         MessageEntry.MESSAGE_READ + " INTEGER" +

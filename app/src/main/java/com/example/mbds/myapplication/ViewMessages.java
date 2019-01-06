@@ -26,7 +26,7 @@ public class ViewMessages extends AppCompatActivity {
     public static final String PROJECTION[] = {
             BaseColumns._ID,
             MessageEntry.MESSAGE_SENDER,
-            MessageEntry.MESSAGE_RECEIVER,
+          //  MessageEntry.MESSAGE_RECEIVER,
             MessageEntry.MESSAGE_CONTENT,
             MessageEntry.MESSAGE_RECEIVED_AT,
             MessageEntry.MESSAGE_READ
@@ -86,9 +86,9 @@ public class ViewMessages extends AppCompatActivity {
                     csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_SENDER)
             );
 
-            String receiver = csr.getString(
+           /* String receiver = csr.getString(
                     csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_RECEIVER)
-            );
+            );*/
 
             String content = csr.getString(
                     csr.getColumnIndexOrThrow(MessageEntry.MESSAGE_CONTENT)
@@ -107,7 +107,7 @@ public class ViewMessages extends AppCompatActivity {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
                 Date receivedAtDate = sdf.parse(receivedAt);
-                Message m = new Message(id, sender, receiver, content, receivedAtDate, read);
+                Message m = new Message(id, sender, content, receivedAtDate, read);
 
                 messages.add(m);
 
