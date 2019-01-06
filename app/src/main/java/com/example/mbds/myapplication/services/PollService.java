@@ -23,16 +23,14 @@ import com.android.volley.toolbox.Volley;
 import com.example.mbds.myapplication.entities.Message;
 import com.example.mbds.myapplication.entities.MessageUtils;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PollService extends Service {
 
+    private boolean firstTime;
     private Handler mHandler;
     private Context context = this;
     private SQLiteDatabase db;
@@ -54,10 +52,13 @@ public class PollService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        firstTime = true;
+
         mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
 
-        db = new DBHelper(this).getWritableDatabase();
+        new DBHelper(this).deleteDatabase(this);
 
+        db = new DBHelper(this).getWritableDatabase();
         // Create the Handler object
         mHandler = new Handler();
         // Execute a runnable task as soon as possible
@@ -108,7 +109,7 @@ public class PollService extends Service {
 
                     for(int i = 0; i < arr.length(); i++) {
                         JSONObject o = arr.getJSONObject(i);
-                        if(o.getBoolean("alreadyReturned"))
+                        if(o.getBoolean("alreadyReturned") && !firstTime)
                             continue;
                         if(MessageUtils.isPing(o.getString("msg")) || MessageUtils.isPong(o.getString("msg")))
                             continue;
@@ -120,13 +121,15 @@ public class PollService extends Service {
 
                         long rowId = db.insert(MessageEntry.TABLE_NAME, null, vals);
 
-                        Log.d("polli", rowId + "");
                     }
 
+                    firstTime = false;
                     Log.d("polli", arr.toString());
                     return Response.error(new VolleyError());
 
                 } catch (Exception e) {
+                    Log.d("polli", e.getMessage());
+
                     return Response.error(new VolleyError());
                 }
             }

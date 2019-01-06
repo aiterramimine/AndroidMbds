@@ -35,23 +35,8 @@
         android:id="@+id/login_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_submit"
+        android:text="Login"
         android:onClick="login"/>
-
-    <TextView
-        android:id="@+id/to_register_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/to_register"
-        android:onClick="toRegister"
-        />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="toFragmentExample"
-        android:text="@string/frag_example_btn" />
 
 
     <Button
@@ -83,11 +68,5 @@
         android:onClick="register"
         android:text="Register" />
 
-    <Button
-        android:id="@+id/delete_db_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="deleteDb"
-        android:text="@string/delete_db_btn" />
 
 </LinearLayout>
