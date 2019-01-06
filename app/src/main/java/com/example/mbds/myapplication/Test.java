@@ -1,5 +1,6 @@
 package com.example.mbds.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mbds.myapplication.services.DBHelper;
+import com.example.mbds.myapplication.services.PollService;
 import com.example.mbds.myapplication.services.UserOperations;
 
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 
 public class Test extends AppCompatActivity {
 
+    private Context context = this;
     private EditText loginBox;
     private EditText passBox;
     private Button submitBtn;
@@ -57,14 +60,6 @@ public class Test extends AppCompatActivity {
     }
 
     public void login(View v) {
-       /* UserOperations userOperations = new UserOperations(this);
-        boolean correctCredentials = userOperations.login(loginBox.getText().toString(), passBox.getText().toString());
-
-        if(correctCredentials) {
-            submitBtn.setBackgroundColor(Color.GREEN);
-        } else {
-            submitBtn.setBackgroundColor(Color.RED);
-        }*/
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", loginBox.getText().toString());
@@ -80,17 +75,20 @@ public class Test extends AppCompatActivity {
 
                             @Override
                             public void onResponse(JSONObject response) {
-                                //((TextView)findViewById(R.id.status)).setText("User registered!");
                                 SharedPreferences mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
 
                                 try {
                                     SharedPreferences.Editor editor = mPreferences.edit();
 
                                     editor.putString("token", response.getString("access_token"));  // Saving string
-                                    Log.d("yess", mPreferences.getString("token", null));
-
+                                    editor.commit();
+                                    //if(mPreferences.getString("token", null) != null)
+                                      //  Log.d("yess", response.getString("access_token"));
+                                    Intent i = new Intent(context, PollService.class);
+                                    context.startService(i);
                                 } catch (Exception e) {
-                                    Log.d("yess", mPreferences.getString("token", null));
+                                    Log.d("login", e.getMessage());
+
 
                                 }
                             }
@@ -100,7 +98,6 @@ public class Test extends AppCompatActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d("yess", "no2");
 
                             }
                         });
