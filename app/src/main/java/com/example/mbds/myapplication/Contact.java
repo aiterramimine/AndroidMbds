@@ -3,7 +3,9 @@ package com.example.mbds.myapplication;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,12 +19,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mbds.myapplication.services.CipherUtils;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
 
 import org.json.JSONObject;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,11 +48,19 @@ public class Contact extends AppCompatActivity {
         setContentView(R.layout.activity_contact);
     }
 
-    public void addContact() {
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void addContact(View v) {
         // ToDo : Check if contact exists then add it to the local DB
         // For now we assume the contact doesn't exist
 
 
+        try {
+            sendPingMessage();
+            //Log.d("success", "contact added");
+        } catch (Exception e) {
+            //Log.d("error", "contact not added");
+            e.printStackTrace();
+        }
     }
 
     public void back(View v) {
@@ -54,7 +68,8 @@ public class Contact extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void sendPingMessage(View v) throws
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void sendPingMessage() throws
             NoSuchPaddingException,
             NoSuchAlgorithmException,
             InvalidKeyException,
@@ -62,6 +77,14 @@ public class Contact extends AppCompatActivity {
             BadPaddingException {
         final String author = getSharedPreferences("session", MODE_PRIVATE).getString("login", "");
         String receiver = ((EditText)findViewById(R.id.login_box)).getText().toString();
+
+        try {
+            CipherUtils.generateKeyPair("titi");
+            KeyStore.Entry pub = CipherUtils.getPublicKey("titi");
+            Log.d("KEY",pub.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("message", author + "[|]PING[|]" + "cle");
@@ -80,9 +103,10 @@ public class Contact extends AppCompatActivity {
                                 SharedPreferences mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
 
                                 try {
+                                    //Log.d("response message", response.getString("msg"));
 
                                 } catch (Exception e) {
-                                    Log.d("error send", e.getMessage());
+                                    Log.d("error add contact", e.getMessage());
                                     return;
                                 }
                             }
@@ -92,7 +116,7 @@ public class Contact extends AppCompatActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
+                                Log.d("error", "error adding contact");
                             }
                         }) {
             /** Passing some request headers* */
