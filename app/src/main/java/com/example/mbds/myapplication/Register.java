@@ -3,44 +3,69 @@ package com.example.mbds.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import com.example.mbds.myapplication.services.DBHelper;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import com.example.mbds.myapplication.services.UserOperations;
 
-public class Register extends AppCompatActivity {
-    private UserOperations userOperations;
+import org.json.JSONObject;
 
-    private EditText login;
+public class Register extends AppCompatActivity {
+
+    private EditText username;
     private EditText password;
-    private EditText firstName;
-    private EditText lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        login = findViewById(R.id.login_box);
+        username = findViewById(R.id.login_box);
         password = findViewById(R.id.pass_box);
-        firstName = findViewById(R.id.first_name_box);
-        lastName = findViewById(R.id.last_name_box);
-
-        userOperations = new UserOperations(this);
     }
 
     public void register(View v) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("username", username.getText().toString());
+        params.put("password", password.getText().toString());
 
-        userOperations.addUser(
-                login.getText().toString(),
-                password.getText().toString(),
-                firstName.getText().toString(),
-                lastName.getText().toString());
-    }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://baobab.tokidev.fr/api/createUser";
 
-    public void toLogin(View v) {
-        Intent intent = new Intent(this, Test.class);
-        startActivity(intent);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (url, new JSONObject(params),
+
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ((TextView)findViewById(R.id.status)).setText("User registered!");
+                    }
+                },
+
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ((TextView)findViewById(R.id.status)).setText("Registration failed!");
+
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
     }
 }

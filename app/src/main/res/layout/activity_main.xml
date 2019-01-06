@@ -69,6 +69,13 @@
         android:text="@string/view_messages_btn_txt" />
 
     <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="register"
+        android:text="Register" />
+
+    <Button
         android:id="@+id/delete_db_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

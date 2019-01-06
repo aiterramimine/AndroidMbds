@@ -1,16 +1,27 @@
 package com.example.mbds.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mbds.myapplication.services.DBHelper;
 import com.example.mbds.myapplication.services.UserOperations;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class Test extends AppCompatActivity {
 
@@ -46,14 +57,55 @@ public class Test extends AppCompatActivity {
     }
 
     public void login(View v) {
-        UserOperations userOperations = new UserOperations(this);
+       /* UserOperations userOperations = new UserOperations(this);
         boolean correctCredentials = userOperations.login(loginBox.getText().toString(), passBox.getText().toString());
 
         if(correctCredentials) {
             submitBtn.setBackgroundColor(Color.GREEN);
         } else {
             submitBtn.setBackgroundColor(Color.RED);
-        }
+        }*/
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("username", loginBox.getText().toString());
+        params.put("password", passBox.getText().toString());
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://baobab.tokidev.fr/api/login";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (url, new JSONObject(params),
+
+                        new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                //((TextView)findViewById(R.id.status)).setText("User registered!");
+                                SharedPreferences mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
+
+                                try {
+                                    SharedPreferences.Editor editor = mPreferences.edit();
+
+                                    editor.putString("token", response.getString("access_token"));  // Saving string
+                                    Log.d("yess", mPreferences.getString("token", null));
+
+                                } catch (Exception e) {
+                                    Log.d("yess", mPreferences.getString("token", null));
+
+                                }
+                            }
+                        },
+
+                        new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("yess", "no2");
+
+                            }
+                        });
+
+        queue.add(jsonObjectRequest);
 
     }
 
@@ -77,7 +129,7 @@ public class Test extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void toRegister(View v) {
+    public void register(View v) {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
