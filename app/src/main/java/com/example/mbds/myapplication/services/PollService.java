@@ -110,6 +110,8 @@ public class PollService extends Service {
                         JSONObject o = arr.getJSONObject(i);
                         if(o.getBoolean("alreadyReturned"))
                             continue;
+                        if(MessageUtils.isPing(o.getString("msg")) || MessageUtils.isPong(o.getString("msg")))
+                            continue;
 
                         ContentValues vals = new ContentValues();
                         vals.put(MessageEntry.MESSAGE_SENDER, MessageUtils.getAuthor(o.getString("msg")));
