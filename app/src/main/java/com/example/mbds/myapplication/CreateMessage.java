@@ -72,13 +72,13 @@ public class CreateMessage extends AppCompatActivity {
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException{
-        String sender = "Me";
+        final String author = getSharedPreferences("session", MODE_PRIVATE).getString("login", "");
         String receiver = ((EditText)findViewById(R.id.receiver_edt)).getText().toString();
         String content = ((EditText)findViewById(R.id.content_edt)).getText().toString();
 
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("message", content);
+        params.put("message", author + "[|]MSG[|]" + content);
         params.put("receiver", receiver);
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -127,7 +127,7 @@ public class CreateMessage extends AppCompatActivity {
 
         ContentValues vals = new ContentValues();
 
-        vals.put(MessageEntry.MESSAGE_SENDER, sender);
+        vals.put(MessageEntry.MESSAGE_SENDER, "Me");
         //vals.put(MessageEntry.MESSAGE_RECEIVER, receiver);
         vals.put(MessageEntry.MESSAGE_CONTENT, content);
 
