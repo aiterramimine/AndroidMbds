@@ -116,6 +116,11 @@ public class Test extends AppCompatActivity {
 
     }
 
+    public void toNewContact(View v) {
+        Intent intent   = new Intent(this, Contact.class);
+        startActivity(intent);
+    }
+
     public void toCreateMessage(View v) {
         Intent intent = new Intent(this, CreateMessage.class);
         startActivity(intent);
