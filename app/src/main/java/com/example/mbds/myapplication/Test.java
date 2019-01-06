@@ -81,6 +81,7 @@ public class Test extends AppCompatActivity {
                                     SharedPreferences.Editor editor = mPreferences.edit();
 
                                     editor.putString("token", response.getString("access_token"));  // Saving string
+                                    editor.putString("login", loginBox.getText().toString());
                                     editor.commit();
                                     //if(mPreferences.getString("token", null) != null)
                                       //  Log.d("yess", response.getString("access_token"));
