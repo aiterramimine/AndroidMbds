@@ -27,4 +27,10 @@ public class MessageUtils {
         if(separated.length < 3 && !separated[1].equals("MSG")) return "";
         return separated[2];
     }
+
+    public static String getKey(String msg) {
+        String[] separated = msg.split("\\|");
+        if(separated.length < 3 && !(separated[1].equals("PING") || separated[1].equals("PONG"))) return "";
+        return separated[2];
+    }
 }

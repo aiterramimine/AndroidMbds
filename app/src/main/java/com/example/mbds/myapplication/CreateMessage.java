@@ -149,59 +149,7 @@ public class CreateMessage extends AppCompatActivity {
         //Log.d("tagg", "INSERTING MESSAGE | rowId: " + rowId);
     }
 
-    private byte[] cipher(String s) throws
-            NoSuchPaddingException,
-            NoSuchAlgorithmException,
-            InvalidKeyException,
-            IllegalBlockSizeException,
-            BadPaddingException {
 
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] ret = cipher.doFinal(s.getBytes());
-
-        Log.d("tagg","The cyphered message is :" + new String(ret));
-
-        return ret;
-
-    }
-
-    private String decipher(byte[] b) throws
-            NoSuchPaddingException,
-            NoSuchAlgorithmException,
-            InvalidKeyException,
-            IllegalBlockSizeException,
-            BadPaddingException {
-
-        Log.d("tagg", "Entering the deciphering function");
-        Cipher cipher1 = Cipher.getInstance("RSA");
-        cipher1.init(Cipher.DECRYPT_MODE, privateKey);
-        Log.d("tagg", "Entering the deciphering function 1");
-        byte[] decryptedBytes = cipher1.doFinal(b);
-        Log.d("tagg", "Entering the deciphering function 2");
-        String decrypted = new String(decryptedBytes);
-        Log.d("tagg", "Entering the deciphering function 3");
-
-        Log.d("tagg", "The deciphered message is : " + decrypted);
-
-        return decrypted;
-    }
-
-    private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
-        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-        byte[] encrypted = cipher.doFinal(clear);
-        return encrypted;
-    }
-
-    private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
-        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-        byte[] decrypted = cipher.doFinal(encrypted);
-        return decrypted;
-    }
 
 
 }

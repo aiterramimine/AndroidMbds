@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -79,9 +80,9 @@ public class Contact extends AppCompatActivity {
         String receiver = ((EditText)findViewById(R.id.login_box)).getText().toString();
 
         try {
-            CipherUtils.generateKeyPair("titi");
-            KeyStore.Entry pub = CipherUtils.getPublicKey("titi");
-            Log.d("KEY",pub.toString());
+            CipherUtils.generateKeyPair("key_" + author + "_" + receiver);
+            KeyStore.Entry pub = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

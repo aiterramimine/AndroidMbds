@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,13 +24,22 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mbds.myapplication.R;
 import com.example.mbds.myapplication.entities.Message;
 import com.example.mbds.myapplication.entities.MessageUtils;
 import com.example.mbds.myapplication.services.entries.MessageEntry;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class PollService extends Service {
 
@@ -97,9 +110,11 @@ public class PollService extends Service {
 
             }
         }) {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             protected Response parseNetworkResponse(NetworkResponse response) {
                 try {
+
                     String jsonString =
                             new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                    // return Response.success(new JSONObject(jsonString),
@@ -111,8 +126,35 @@ public class PollService extends Service {
                         JSONObject o = arr.getJSONObject(i);
                         if(o.getBoolean("alreadyReturned") && !firstTime)
                             continue;
-                        if(MessageUtils.isPing(o.getString("msg")) || MessageUtils.isPong(o.getString("msg")))
+                        if(MessageUtils.isPing(o.getString("msg"))) {
+                            String author = MessageUtils.getAuthor(o.getString("msg"));
+                            String receiver = o.getString("receiver");
+                            String key = MessageUtils.getKey(o.getString("msg"));
+                            String keyName = "key_" + author + "_" + receiver;
+
+                            //ToDO : check if key already exists
+                            boolean keyExists = true;
+
+                            if (!keyExists) {
+                                CipherUtils.generateSharedKey(getApplicationContext(), key.getBytes(), author, receiver);
+                                sendPongMessage(author, receiver);
+                            }
+
                             continue;
+                        }
+
+                        if (MessageUtils.isPong(o.getString("msg"))) {
+                            String keyName = "key_" + MessageUtils.getAuthor(o.getString("msg")) + "_" + o.getString("receiver");
+
+                            //ToDO : check if key already exists
+                            boolean keyExists = true;
+
+                            if (!keyExists) {
+
+                            }
+
+                            continue;
+                        }
 
                         ContentValues vals = new ContentValues();
                         vals.put(MessageEntry.MESSAGE_SENDER, MessageUtils.getAuthor(o.getString("msg")));
@@ -147,4 +189,73 @@ public class PollService extends Service {
         queue.add(req);
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void sendPongMessage(String author, String receiver) throws
+            NoSuchPaddingException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            IllegalBlockSizeException,
+            BadPaddingException {
+
+        try {
+            CipherUtils.generateKeyPair("key_" + author + "_" + receiver);
+            KeyStore.Entry pub = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String key = getSharedPreferences("key", MODE_PRIVATE).getString("key_" + author + "_" + receiver, "");
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("message", author + "[|]PONG[|]" + key);
+        params.put("receiver", receiver);
+
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://baobab.tokidev.fr/api/sendMsg";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (url, new JSONObject(params),
+
+                        new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                SharedPreferences mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
+
+                                try {
+                                    //Log.d("response message", response.getString("msg"));
+
+                                } catch (Exception e) {
+                                    Log.d("error add contact", e.getMessage());
+                                    return;
+                                }
+                            }
+                        },
+
+                        new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("error", "error adding contact");
+                            }
+                        }) {
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+
+                SharedPreferences mPreferences = getSharedPreferences("session" ,MODE_PRIVATE);
+                HashMap headers = new HashMap();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + mPreferences.getString("token", ""));
+
+                return headers;
+            }
+        };
+
+        queue.add(jsonObjectRequest);
+    }
+
+
 }

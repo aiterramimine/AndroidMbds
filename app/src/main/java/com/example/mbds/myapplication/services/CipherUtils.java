@@ -1,5 +1,8 @@
 package com.example.mbds.myapplication.services;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
@@ -19,6 +22,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
+import java.util.Random;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -112,7 +116,7 @@ public final class CipherUtils {
     public static void generateKeyPair(String keyName) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchProviderException {
         KeyPairGenerator kpg = null;
 
-        kpg = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
+        kpg = KeyPairGenerator.getInstance("RSA");
 
         KeyGenParameterSpec.Builder builder = new KeyGenParameterSpec.Builder(keyName, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                 .setBlockModes(KeyProperties.BLOCK_MODE_ECB)
@@ -123,13 +127,25 @@ public final class CipherUtils {
         KeyPair kp = kpg.genKeyPair();
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     public static KeyStore.Entry getPublicKey(String keyName) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableEntryException, NoSuchProviderException {
         KeyStore keyStore = null;
-        keyStore = KeyStore.getInstance("RSA", "AndroidKeyStore");
+        keyStore = KeyStore.getInstance("AndroidKeyStore");
 
         keyStore.load(null);
 
         return keyStore.getEntry(keyName, null);
+    }
+
+    public static byte[] generateSharedKey(Context context, byte[] publicKey, String author, String receiver) throws Exception {
+        byte[] clearSharedKey = new byte[20];
+        new Random().nextBytes(clearSharedKey);
+
+        SharedPreferences.Editor editor = context.getSharedPreferences("key", Context.MODE_PRIVATE).edit();
+        editor.putString("key_" + author + "_" + receiver, new String(clearSharedKey));
+        editor.commit();
+
+        return encrypt(publicKey, clearSharedKey);
     }
 
 }
