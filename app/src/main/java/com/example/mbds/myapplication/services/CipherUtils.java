@@ -128,13 +128,13 @@ public final class CipherUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public static KeyStore.Entry getPublicKey(String keyName) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableEntryException, NoSuchProviderException {
+    public static PublicKey getPublicKey(String keyName) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableEntryException, NoSuchProviderException {
         KeyStore keyStore = null;
         keyStore = KeyStore.getInstance("AndroidKeyStore");
 
         keyStore.load(null);
 
-        return keyStore.getEntry(keyName, null);
+        return keyStore.getCertificate(keyName).getPublicKey();
     }
 
     public static byte[] generateSharedKey(Context context, byte[] publicKey, String author, String receiver) throws Exception {

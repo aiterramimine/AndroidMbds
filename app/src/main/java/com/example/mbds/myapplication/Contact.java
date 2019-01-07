@@ -81,7 +81,8 @@ public class Contact extends AppCompatActivity {
 
         try {
             CipherUtils.generateKeyPair("key_" + author + "_" + receiver);
-            KeyStore.Entry pub = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+            PublicKey publicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+
 
         } catch (Exception e) {
             e.printStackTrace();

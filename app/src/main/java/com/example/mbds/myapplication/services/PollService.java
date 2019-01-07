@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,7 +100,7 @@ public class PollService extends Service {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            Log.d("polli", response.toString());
+                            Log.d("poll", response.toString());
                         } catch (Exception e) {
 
                         }
@@ -127,37 +128,37 @@ public class PollService extends Service {
                         if(o.getBoolean("alreadyReturned") && !firstTime)
                             continue;
                         if(MessageUtils.isPing(o.getString("msg"))) {
-                            String author = MessageUtils.getAuthor(o.getString("msg"));
-                            String receiver = o.getString("receiver");
-                            String key = MessageUtils.getKey(o.getString("msg"));
-                            String keyName = "key_" + author + "_" + receiver;
-
-                            //ToDO : check if key already exists
-                            boolean keyExists = true;
-
-                            if (!keyExists) {
-                                CipherUtils.generateSharedKey(getApplicationContext(), key.getBytes(), author, receiver);
-                                sendPongMessage(author, receiver);
-                            }
-
+//                            String author = MessageUtils.getAuthor(o.getString("msg"));
+//                            String receiver = o.getString("receiver");
+//                            String key = MessageUtils.getKey(o.getString("msg"));
+//                            String keyName = "key_" + author + "_" + receiver;
+//
+//                            //ToDO : check if key already exists
+//                            boolean keyExists = true;
+//
+//                            if (!keyExists) {
+//                                CipherUtils.generateSharedKey(getApplicationContext(), key.getBytes(), author, receiver);
+//                                sendPongMessage(author, receiver);
+//                            }
+//
                             continue;
                         }
 
                         if (MessageUtils.isPong(o.getString("msg"))) {
-                            String keyName = "key_" + MessageUtils.getAuthor(o.getString("msg")) + "_" + o.getString("receiver");
+//                            String keyName = "key_" + MessageUtils.getAuthor(o.getString("msg")) + "_" + o.getString("receiver");
 
-                            //ToDO : check if key already exists
-                            boolean keyExists = true;
-
-                            if (!keyExists) {
-                                String author = MessageUtils.getAuthor(o.getString("msg"));
-                                String receiver = o.getString("receiver");
-                                String key = MessageUtils.getKey(o.getString("msg"));
-                                //Todo : Retrieve public key below !
-                                String myPrivateKey = "private_key";
-                                KeyStore.Entry myPublicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
-                                CipherUtils.decrypt(myPrivateKey.getBytes(), key.getBytes());
-                            }
+                            ////ToDO : check if key already exists
+//                            boolean keyExists = true;
+//
+//                            if (!keyExists) {
+//                                String author = MessageUtils.getAuthor(o.getString("msg"));
+//                                String receiver = o.getString("receiver");
+//                                String key = MessageUtils.getKey(o.getString("msg"));
+//
+//                                String myPrivateKey = "private_key";
+//                                //KeyStore.Entry myPublicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+//                                CipherUtils.decrypt(myPrivateKey.getBytes(), key.getBytes());
+//                            }
 
                             continue;
                         }
@@ -172,11 +173,11 @@ public class PollService extends Service {
                     }
 
                     firstTime = false;
-                    Log.d("polli", arr.toString());
+                    Log.d("poll", arr.toString());
                     return Response.error(new VolleyError());
 
                 } catch (Exception e) {
-                    Log.d("polli", e.getMessage());
+                    Log.d("error poll", e.toString());
 
                     return Response.error(new VolleyError());
                 }
@@ -206,7 +207,7 @@ public class PollService extends Service {
 
         try {
             CipherUtils.generateKeyPair("key_" + author + "_" + receiver);
-            KeyStore.Entry pub = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+            PublicKey pub = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
         } catch (Exception e) {
             e.printStackTrace();
         }
