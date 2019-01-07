@@ -150,7 +150,13 @@ public class PollService extends Service {
                             boolean keyExists = true;
 
                             if (!keyExists) {
-
+                                String author = MessageUtils.getAuthor(o.getString("msg"));
+                                String receiver = o.getString("receiver");
+                                String key = MessageUtils.getKey(o.getString("msg"));
+                                //Todo : Retrieve public key below !
+                                String myPrivateKey = "private_key";
+                                KeyStore.Entry myPublicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+                                CipherUtils.decrypt(myPrivateKey.getBytes(), key.getBytes());
                             }
 
                             continue;
