@@ -51,6 +51,7 @@ public class Contact extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void addContact(View v) {
+
         // ToDo : Check if contact exists then add it to the local DB
         // For now we assume the contact doesn't exist
 
@@ -79,17 +80,19 @@ public class Contact extends AppCompatActivity {
         final String author = getSharedPreferences("session", MODE_PRIVATE).getString("login", "");
         String receiver = ((EditText)findViewById(R.id.login_box)).getText().toString();
 
+        String publicKey = "";
+
         try {
             CipherUtils.generateKeyPair("key_" + author + "_" + receiver);
-            PublicKey publicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
+            publicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver).getEncoded().toString();
+
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("message", author + "[|]PING[|]" + "cle");
+        params.put("message", author + "[|]PING[|]" + publicKey);
         params.put("receiver", receiver);
 
         RequestQueue queue = Volley.newRequestQueue(this);

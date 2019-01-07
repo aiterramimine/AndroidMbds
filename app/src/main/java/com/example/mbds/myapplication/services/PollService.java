@@ -128,37 +128,41 @@ public class PollService extends Service {
                         if(o.getBoolean("alreadyReturned") && !firstTime)
                             continue;
                         if(MessageUtils.isPing(o.getString("msg"))) {
-//                            String author = MessageUtils.getAuthor(o.getString("msg"));
-//                            String receiver = o.getString("receiver");
-//                            String key = MessageUtils.getKey(o.getString("msg"));
-//                            String keyName = "key_" + author + "_" + receiver;
-//
-//                            //ToDO : check if key already exists
-//                            boolean keyExists = true;
-//
-//                            if (!keyExists) {
-//                                CipherUtils.generateSharedKey(getApplicationContext(), key.getBytes(), author, receiver);
-//                                sendPongMessage(author, receiver);
-//                            }
-//
+                            String author = MessageUtils.getAuthor(o.getString("msg"));
+                            String receiver = getSharedPreferences("session", MODE_PRIVATE).getString("login", "");
+                            String key = MessageUtils.getKey(o.getString("msg"));
+                            String keyName = "key_" + author + "_" + receiver;
+
+                            boolean keyExists = true;
+                            try {
+                                getSharedPreferences("key", MODE_PRIVATE).getString(keyName, "");
+                            } catch (NullPointerException e) {
+                                keyExists = false;
+                            }
+
+                            if (!keyExists) {
+                                byte[] generatedKey = CipherUtils.generateSharedKey(getApplicationContext(), key.getBytes(), author, receiver);
+                                sendPongMessage(receiver, author, generatedKey.toString());
+                            }
+
                             continue;
                         }
 
                         if (MessageUtils.isPong(o.getString("msg"))) {
-//                            String keyName = "key_" + MessageUtils.getAuthor(o.getString("msg")) + "_" + o.getString("receiver");
+                            String author = MessageUtils.getAuthor(o.getString("msg"));
+                            String receiver = getSharedPreferences("session", MODE_PRIVATE).getString("login", "");
+                            String keyName = "key_" + author + "_" + receiver;
 
-                            ////ToDO : check if key already exists
-//                            boolean keyExists = true;
-//
-//                            if (!keyExists) {
-//                                String author = MessageUtils.getAuthor(o.getString("msg"));
-//                                String receiver = o.getString("receiver");
-//                                String key = MessageUtils.getKey(o.getString("msg"));
-//
-//                                String myPrivateKey = "private_key";
-//                                //KeyStore.Entry myPublicKey = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
-//                                CipherUtils.decrypt(myPrivateKey.getBytes(), key.getBytes());
-//                            }
+                            try {
+                                getSharedPreferences("key", MODE_PRIVATE).getString(keyName, "");
+                            } catch (NullPointerException e) {
+                                String key = MessageUtils.getKey(o.getString("msg"));
+
+                                byte[] privateKey = CipherUtils.getPrivateKey(keyName).getEncoded();
+                                byte[] clearSharedKey = CipherUtils.decrypt(privateKey, key.getBytes());
+
+                                getSharedPreferences("key", MODE_PRIVATE).edit().putString(keyName, new String(clearSharedKey));
+                            }
 
                             continue;
                         }
@@ -198,21 +202,12 @@ public class PollService extends Service {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void sendPongMessage(String author, String receiver) throws
+    public void sendPongMessage(String author, String receiver, String key) throws
             NoSuchPaddingException,
             NoSuchAlgorithmException,
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException {
-
-        try {
-            CipherUtils.generateKeyPair("key_" + author + "_" + receiver);
-            PublicKey pub = CipherUtils.getPublicKey("key_" + author + "_" + receiver);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String key = getSharedPreferences("key", MODE_PRIVATE).getString("key_" + author + "_" + receiver, "");
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("message", author + "[|]PONG[|]" + key);

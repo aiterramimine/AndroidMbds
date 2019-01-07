@@ -129,16 +129,23 @@ public final class CipherUtils {
 
     @TargetApi(Build.VERSION_CODES.O)
     public static PublicKey getPublicKey(String keyName) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableEntryException, NoSuchProviderException {
-        KeyStore keyStore = null;
-        keyStore = KeyStore.getInstance("AndroidKeyStore");
+        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
 
         keyStore.load(null);
 
         return keyStore.getCertificate(keyName).getPublicKey();
     }
 
+    public static PrivateKey  getPrivateKey(String keyName) throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException, UnrecoverableEntryException {
+        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+        keyStore.load(null);
+
+        KeyStore.Entry entry = keyStore.getEntry(keyName, null);
+        return ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
+    }
+
     public static byte[] generateSharedKey(Context context, byte[] publicKey, String author, String receiver) throws Exception {
-        byte[] clearSharedKey = new byte[20];
+        byte[] clearSharedKey = new byte[128];
         new Random().nextBytes(clearSharedKey);
 
         SharedPreferences.Editor editor = context.getSharedPreferences("key", Context.MODE_PRIVATE).edit();
